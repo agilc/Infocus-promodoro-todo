@@ -2,7 +2,7 @@ import React from 'react';
 
 let Home = () => {
   return (
-    <div>Lets start</div>
+    <div className="app-main-wrapper">Lets start</div>
   )
 }
 
