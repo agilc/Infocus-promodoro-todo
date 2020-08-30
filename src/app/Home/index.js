@@ -1,8 +1,18 @@
 import React from 'react';
+import { Layout } from 'antd';
+
+const { Header, Footer, Sider, Content } = Layout;
 
 let Home = () => {
   return (
-    <div className="app-main-wrapper">Lets start</div>
+    <Layout>
+      {/* <Header>Header</Header> */}
+      <Layout>
+        <Sider>Sider</Sider>
+        <Content>Content</Content>
+      </Layout>
+      {/* <Footer>Footer</Footer> */}
+    </Layout>
   )
 }
 
