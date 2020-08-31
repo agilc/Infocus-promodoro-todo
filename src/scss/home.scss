@@ -1,3 +1,33 @@
-.app-main-wrapper {
-  color: red;
+body {
+  min-height: 600px;
+  min-width: 800px;
+}
+
+.home-layout {
+  height: 100vh;
+
+  .add-more-icon {
+    color: white;
+    font-size: xx-large;
+    display: flex;
+    justify-content: center;
+    height: 20%;
+    align-items: center;
+  }
+
+  .category-list-wrapper {
+    margin: 0 10px;
+
+    .item-count {
+      color: white;
+      border-radius: 25%;
+      padding: 1px;
+      font-weight: 600;
+    }
+  }
+}
+
+.ant-layout-sider {
+  background: rgb(63,94,251);
+  background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(70,173,252,1) 100%);
 }

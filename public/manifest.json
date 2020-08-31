@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "Calculator plugin",
-  "description": "This is a calculator chrome extension",
+  "name": "Infocus : Todo-pomodoro",
+  "description": "This is a todo/pomodoro app",
   "version": "1.0",
 
   "browser_action": {
