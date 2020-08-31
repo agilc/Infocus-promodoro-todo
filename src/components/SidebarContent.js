@@ -1,30 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { List } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faList, faWindowClose, faStar } from '@fortawesome/free-solid-svg-icons'
+import { faPlusCircle, faList, faWindowClose, faStar, faEdit } from '@fortawesome/free-solid-svg-icons'
 
 import AddCategoryModal from 'components/modal/AddCategoryModal';
 
 let SidebarContent = () => {
-  const [todoCategories, setTodoCategories] = useState(JSON.parse(localStorage.getItem('todo_categories'))),
-        [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
+  const [todoCategories, setTodoCategories] = useState([]),
+        [showAddCategoryModal, setShowAddCategoryModal] = useState(false),
+        [selectedCategory,setSelectedCategory] = useState(null);
 
   useEffect(()=> {
-    setTodoCategories([ {id: 0, value: "Favorites"}, ...todoCategories]);
+    let currentTodoCategories = [];
+    if(localStorage.getItem('todo_categories'))
+      currentTodoCategories = JSON.parse(localStorage.getItem('todo_categories'));
+    setTodoCategories([ {id: 0, value: "Favorites"}, ...currentTodoCategories]);
   }, []);
 
   const onCategoryAdd = (categoryName) => {
     const categoryCount = todoCategories.length;
-    let updatedTodoCategories = [...todoCategories, {id: categoryCount+1, value: categoryName}];
+
+    let updatedTodoCategories = [];
+    if(selectedCategory && selectedCategory.id){
+      updatedTodoCategories = todoCategories.map(item => {
+        if(item.id === selectedCategory.id)
+          return {id: selectedCategory.id, value: categoryName };
+        return item;
+      })
+    }
+    else
+      updatedTodoCategories = [...todoCategories, {id: categoryCount+1, value: categoryName}];
     setTodoCategories(updatedTodoCategories);
     setShowAddCategoryModal(false);
-    localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories));
+    
+    localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
+    setSelectedCategory(null);
   }
 
   const onCategoryRemove = (categoryId) => {
     const updatedTodoCategories = todoCategories.filter(item => item.id !== categoryId);
     setTodoCategories(updatedTodoCategories);
-    localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories));
+    localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
+  }
+
+  const onCategoryEdit = (category) => {
+    setSelectedCategory(category);
+    setShowAddCategoryModal(true)
   }
 
   return (
@@ -46,6 +67,7 @@ let SidebarContent = () => {
                 title={<div>{item.value}</div>}
               />
               <div className="item-count">12</div>
+              { item.id !== 0 && <div className="item-remove"><FontAwesomeIcon icon={faEdit} onClick={() => onCategoryEdit(item)}/></div> }
               { item.id !== 0 && <div className="item-remove"><FontAwesomeIcon icon={faWindowClose} onClick={() => onCategoryRemove(item.id)}/></div> }
             </List.Item>
           )}
@@ -56,6 +78,8 @@ let SidebarContent = () => {
         show={showAddCategoryModal}
         onConfirm={onCategoryAdd}
         onCancel={() => setShowAddCategoryModal(false)}
+        title={selectedCategory ? "Edit Category" : "Add Category"}
+        selectedCategory={selectedCategory}
       />
     </div>
   )

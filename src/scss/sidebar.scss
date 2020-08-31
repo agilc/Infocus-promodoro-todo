@@ -18,11 +18,17 @@
       div{
         color: white;
         font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       &:hover {
         .item-remove{
           display: flex;
+        }
+        .item-count {
+          display: none;
         }
       }
       

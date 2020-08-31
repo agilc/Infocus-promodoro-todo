@@ -1,3 +1,24 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+.modal-wrapper {
+  .modal-title{
+    font-size: large;
+    font-weight: 600;
+    margin-bottom: 25px;
+  }
+
+  button {
+    margin-left: 25px;
+    span {
+      margin-left: 10px;
+    }
+  }
+
+  .modal-footer {
+    margin-top: 5%;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
