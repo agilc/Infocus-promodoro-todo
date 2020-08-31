@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 
 import SidebarContent from 'components/SidebarContent';
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 let Home = () => {
   return (
