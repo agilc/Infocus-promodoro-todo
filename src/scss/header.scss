@@ -1,0 +1,23 @@
+.header-wrapper {
+  height: 15vh;
+  background-color: #e2e2e2;
+
+  .category-select {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    .ant-select-selector {
+      background-color: #e2e2e2;
+      font-size: larger;
+      font-weight: 700;
+      border: none;
+    }
+
+    .ant-select-arrow {
+      color: black;
+      font-size: 12px;
+    }
+  }
+}
