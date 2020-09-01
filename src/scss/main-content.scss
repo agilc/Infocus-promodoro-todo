@@ -1,0 +1,21 @@
+.main-content-wrapper {
+  margin: 5%;
+  // border: 1px solid #4270fb;
+  border-radius: 5px;
+  background-color: #e2e2e2;
+
+  .list-item {
+    padding: 1%;
+    height: 75px;
+    font-size: large;
+
+    div {
+      font-size: large;
+    }
+
+    &:hover {
+      background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(70,173,252,1) 100%);
+      cursor: pointer;
+    }
+  }
+}

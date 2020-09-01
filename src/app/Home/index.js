@@ -2,18 +2,19 @@ import React from 'react';
 import { Layout } from 'antd';
 
 import SidebarContent from 'components/SidebarContent';
+import MainContent from 'components/MainContent';
 
 const { Sider, Content } = Layout;
 
 let Home = () => {
   return (
     <Layout className="home-layout">
-      <Layout>
-        <Sider width={250}>
-          <SidebarContent />
-        </Sider>
-        <Content>Content</Content>
-      </Layout>
+      <Sider width={250}>
+        <SidebarContent />
+      </Sider>
+      <Content>
+        <MainContent />
+      </Content>
     </Layout>
   )
 }
