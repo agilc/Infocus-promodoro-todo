@@ -1,3 +1,5 @@
+/* global chrome */
+
 import React, { useState, useEffect } from 'react';
 import { List } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,9 +14,13 @@ let SidebarContent = () => {
 
   useEffect(()=> {
     let currentTodoCategories = [];
-    if(localStorage.getItem('todo_categories'))
-      currentTodoCategories = JSON.parse(localStorage.getItem('todo_categories'));
-    setTodoCategories([ {id: 0, value: "Favorites"}, ...currentTodoCategories]);
+    chrome.storage.local.get(['todo_categories'], function(result) {
+      if(result.todo_categories)
+        currentTodoCategories = JSON.parse(result.todo_categories);
+      setTodoCategories([ {id: 0, value: "Favorites"}, ...currentTodoCategories]);
+    });
+    // if(localStorage.getItem('todo_categories'))
+    //   currentTodoCategories = JSON.parse(localStorage.getItem('todo_categories'));
   }, []);
 
   const onCategoryAdd = (categoryName) => {
@@ -33,14 +39,16 @@ let SidebarContent = () => {
     setTodoCategories(updatedTodoCategories);
     setShowAddCategoryModal(false);
     
-    localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
+    // localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
+    chrome.storage.local.set({todo_categories: JSON.stringify(updatedTodoCategories.slice(1))});
     setSelectedCategory(null);
   }
 
   const onCategoryRemove = (categoryId) => {
     const updatedTodoCategories = todoCategories.filter(item => item.id !== categoryId);
     setTodoCategories(updatedTodoCategories);
-    localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
+    chrome.storage.local.set({todo_categories: JSON.stringify(updatedTodoCategories.slice(1))})
+    // localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
   }
 
   const onCategoryEdit = (category) => {
