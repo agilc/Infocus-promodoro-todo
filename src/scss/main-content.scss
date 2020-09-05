@@ -1,12 +1,14 @@
 .main-content-wrapper {
   margin: 5%;
-  // border: 1px solid #4270fb;
-  border-radius: 5px;
-  background-color: #e2e2e2;
+
+  .todo-items-list{
+    border-radius: 5px;
+    background-color: #e2e2e2;
+  }
 
   .list-item {
-    padding: 1%;
-    height: 75px;
+    padding: 0% 4%;
+    height: 60px;
     font-size: large;
 
     div {
@@ -16,6 +18,33 @@
     &:hover {
       background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(70,173,252,1) 100%);
       cursor: pointer;
+    }
+  }
+
+  .add-more-icon {
+    color: #4483fb;
+    font-size: xx-large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15vh;
+  }
+
+  .todo-item-wrapper {
+    display: flex;
+    justify-content: space-between;
+
+    .todo-action-btn {
+      display: flex;
+      align-items: center;
+
+      .action-item {
+        margin: 0 10px;
+      }
+
+      .action-item:hover {
+        color: white;
+      }
     }
   }
 }

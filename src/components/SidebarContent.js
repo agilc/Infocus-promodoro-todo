@@ -14,11 +14,11 @@ let SidebarContent = () => {
 
   useEffect(()=> {
     let currentTodoCategories = [];
-    chrome.storage.local.get(['todo_categories'], function(result) {
-      if(result.todo_categories)
-        currentTodoCategories = JSON.parse(result.todo_categories);
-      setTodoCategories([ {id: 0, value: "Favorites"}, ...currentTodoCategories]);
-    });
+    // chrome.storage.local.get(['todo_categories'], function(result) {
+    //   if(result.todo_categories)
+    //     currentTodoCategories = JSON.parse(result.todo_categories);
+    //   setTodoCategories([ {id: 0, value: "Favorites"}, ...currentTodoCategories]);
+    // });
     // if(localStorage.getItem('todo_categories'))
     //   currentTodoCategories = JSON.parse(localStorage.getItem('todo_categories'));
   }, []);
@@ -40,14 +40,14 @@ let SidebarContent = () => {
     setShowAddCategoryModal(false);
     
     // localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
-    chrome.storage.local.set({todo_categories: JSON.stringify(updatedTodoCategories.slice(1))});
+    // chrome.storage.local.set({todo_categories: JSON.stringify(updatedTodoCategories.slice(1))});
     setSelectedCategory(null);
   }
 
   const onCategoryRemove = (categoryId) => {
     const updatedTodoCategories = todoCategories.filter(item => item.id !== categoryId);
     setTodoCategories(updatedTodoCategories);
-    chrome.storage.local.set({todo_categories: JSON.stringify(updatedTodoCategories.slice(1))})
+    // chrome.storage.local.set({todo_categories: JSON.stringify(updatedTodoCategories.slice(1))})
     // localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
   }
 
