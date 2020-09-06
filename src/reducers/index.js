@@ -1,13 +1,13 @@
 import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
-import Categories from './Categories';
+import Todo from './Todo';
 
 import { createBrowserHistory } from "history";
 
 const history = createBrowserHistory();
 const appReducer = combineReducers({
   router: connectRouter(history),
-  categories: Categories
+  todo: Todo
 });
 
 const rootReducer = (state, action) => {

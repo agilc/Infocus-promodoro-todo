@@ -2,7 +2,8 @@ import { ADD_CATEGORY } from 'constants/ActionTypes';
 
 const INIT_STATE = {
   loader: true,
-  categoryList: []
+  categoryList: [],
+  todoList: []
 };
 
 

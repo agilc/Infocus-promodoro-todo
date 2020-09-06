@@ -48,7 +48,7 @@ let SidebarContent = ({addCategory, categoryList}) => {
   const onCategoryRemove = (categoryId) => {
     const updatedTodoCategories = categoryList.filter(item => item.id !== categoryId);
     // chrome.storage.local.set({todo_categories: JSON.stringify(updatedTodoCategories.slice(1))})
-    localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
+    addCategory(updatedTodoCategories);
   }
 
   const onCategoryEdit = (category) => {
@@ -94,8 +94,8 @@ let SidebarContent = ({addCategory, categoryList}) => {
 }
 
 // export default SidebarContent;
-const mapStateToProps = ({ categories }) => {
-  const { categoryList } = categories;
+const mapStateToProps = ({ todo }) => {
+  const { categoryList } = todo;
 
   return {
     categoryList
