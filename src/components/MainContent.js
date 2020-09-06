@@ -12,12 +12,19 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory}) => {
         [stateTodoList, setStateTodoList] = useState([]);
 
   useEffect(() => {
-    setStateTodoList(todoList.filter(item => item.category === selectedTodoCategory ));
+    updateTodoList();
   }, [todoList]);
 
   useEffect(() => {
-    setStateTodoList(todoList.filter(item => item.category === selectedTodoCategory ));
+    updateTodoList();
   }, [selectedTodoCategory]);
+
+  const updateTodoList = () => {
+    if(selectedTodoCategory === 0)
+      setStateTodoList(todoList.filter(item => item.isFavorite ));
+    else
+      setStateTodoList(todoList.filter(item => item.category === selectedTodoCategory ));
+  }
 
   const onTodoListItemChange = (e) => {
     debugger;
@@ -116,9 +123,12 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory}) => {
           )}
         />
       </div>
-      <div className="add-more-icon">
-        <FontAwesomeIcon className="cursor-pointer" icon={faPlusCircle} onClick={onTodoItemAdd}/>
-      </div>
+      {
+        selectedTodoCategory !== 0 &&
+        <div className="add-more-icon">
+          <FontAwesomeIcon className="cursor-pointer" icon={faPlusCircle} onClick={onTodoItemAdd}/>
+        </div>
+      }
     </div>
   )
 }
