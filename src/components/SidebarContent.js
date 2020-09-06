@@ -4,12 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { List } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faList, faWindowClose, faStar, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { connect } from "react-redux";
 
 import AddCategoryModal from 'components/modal/AddCategoryModal';
+import {addCategory} from 'actions/Categories';
 
-let SidebarContent = () => {
-  const [todoCategories, setTodoCategories] = useState([]),
-        [showAddCategoryModal, setShowAddCategoryModal] = useState(false),
+let SidebarContent = ({addCategory, categoryList}) => {
+  const [showAddCategoryModal, setShowAddCategoryModal] = useState(false),
         [selectedCategory,setSelectedCategory] = useState(null);
 
   useEffect(()=> {
@@ -24,31 +25,30 @@ let SidebarContent = () => {
   }, []);
 
   const onCategoryAdd = (categoryName) => {
-    const categoryCount = todoCategories.length;
+    const categoryCount = categoryList.length;
 
     let updatedTodoCategories = [];
     if(selectedCategory && selectedCategory.id){
-      updatedTodoCategories = todoCategories.map(item => {
+      updatedTodoCategories = categoryList.map(item => {
         if(item.id === selectedCategory.id)
           return {id: selectedCategory.id, value: categoryName };
         return item;
       })
     }
     else
-      updatedTodoCategories = [...todoCategories, {id: categoryCount+1, value: categoryName}];
-    setTodoCategories(updatedTodoCategories);
+      updatedTodoCategories = [...categoryList, {id: categoryCount+1, value: categoryName}];
+    addCategory(updatedTodoCategories);
     setShowAddCategoryModal(false);
     
-    // localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
+    localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
     // chrome.storage.local.set({todo_categories: JSON.stringify(updatedTodoCategories.slice(1))});
     setSelectedCategory(null);
   }
 
   const onCategoryRemove = (categoryId) => {
-    const updatedTodoCategories = todoCategories.filter(item => item.id !== categoryId);
-    setTodoCategories(updatedTodoCategories);
+    const updatedTodoCategories = categoryList.filter(item => item.id !== categoryId);
     // chrome.storage.local.set({todo_categories: JSON.stringify(updatedTodoCategories.slice(1))})
-    // localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
+    localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
   }
 
   const onCategoryEdit = (category) => {
@@ -65,7 +65,7 @@ let SidebarContent = () => {
         <List
           split={true}
           bordered={true}
-          dataSource={todoCategories}
+          dataSource={categoryList}
           renderItem={item => (
             <List.Item key={item.id} className="list-item">
               <List.Item.Meta
@@ -93,4 +93,18 @@ let SidebarContent = () => {
   )
 }
 
-export default SidebarContent;
+// export default SidebarContent;
+const mapStateToProps = ({ categories }) => {
+  const { categoryList } = categories;
+
+  return {
+    categoryList
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {
+    addCategory
+  }
+)(SidebarContent);
