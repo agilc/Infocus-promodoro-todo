@@ -7,9 +7,9 @@ import { faPlusCircle, faList, faWindowClose, faStar, faEdit } from '@fortawesom
 import { connect } from "react-redux";
 
 import AddCategoryModal from 'components/modal/AddCategoryModal';
-import {addCategory, selectTodoCategory} from 'actions/Todo';
+import {addCategory, selectTodoCategory, addTodoItem} from 'actions/Todo';
 
-let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTodoCategory}) => {
+let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTodoCategory, addTodoItem, todoList}) => {
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false),
         [selectedCategory,setSelectedCategory] = useState(null);
 
@@ -40,7 +40,7 @@ let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTo
     addCategory(updatedTodoCategories);
     setShowAddCategoryModal(false);
     
-    localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
+    // localStorage.setItem('todo_categories', JSON.stringify(updatedTodoCategories.slice(1)));
     // chrome.storage.local.set({todo_categories: JSON.stringify(updatedTodoCategories.slice(1))});
     setSelectedCategory(null);
   }
@@ -49,6 +49,8 @@ let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTo
     const updatedTodoCategories = categoryList.filter(item => item.id !== categoryId);
     // chrome.storage.local.set({todo_categories: JSON.stringify(updatedTodoCategories.slice(1))})
     addCategory(updatedTodoCategories);
+    let updatedTodoList = todoList.filter(item => item.category !== categoryId);
+    addTodoItem(updatedTodoList);
   }
 
   const onCategoryEdit = (category) => {
@@ -100,11 +102,12 @@ let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTo
 
 // export default SidebarContent;
 const mapStateToProps = ({ todo }) => {
-  const { categoryList, selectedTodoCategory } = todo;
+  const { categoryList, selectedTodoCategory, todoList } = todo;
 
   return {
     categoryList,
-    selectedTodoCategory
+    selectedTodoCategory,
+    todoList
   };
 };
 
@@ -112,6 +115,7 @@ export default connect(
   mapStateToProps,
   {
     addCategory,
-    selectTodoCategory
+    selectTodoCategory,
+    addTodoItem
   }
 )(SidebarContent);
