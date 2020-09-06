@@ -7,15 +7,24 @@ import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 
 import { addTodoItem } from 'actions/Todo';
 
-let MainContent = ({addTodoItem, todoList}) => {
-  const [selectedTodo, setSelectedTodo] = useState({});
+let MainContent = ({addTodoItem, todoList, selectedTodoCategory}) => {
+  const [selectedTodo, setSelectedTodo] = useState({}),
+        [stateTodoList, setStateTodoList] = useState([]);
+
+  useEffect(() => {
+    setStateTodoList(todoList.filter(item => item.category === selectedTodoCategory ));
+  }, [todoList]);
+
+  useEffect(() => {
+    setStateTodoList(todoList.filter(item => item.category === selectedTodoCategory ));
+  }, [selectedTodoCategory]);
 
   const onTodoListItemChange = (e) => {
     debugger;
     let value = e.target.value;
     let updatedTodoList = todoList.map(item => {
       if(item.id === selectedTodo.id)
-        return { 'id': item.id, 'value': value, 'isFavorite': false };
+        return { ...item, 'id': item.id, 'value': value };
       return item;
     })
     addTodoItem(updatedTodoList);
@@ -39,9 +48,9 @@ let MainContent = ({addTodoItem, todoList}) => {
     e.stopPropagation();
     let newItem = [];
     if(todoList && todoList.length>0)
-      newItem = {id: todoList[todoList.length-1].id + 1, value: "" };
+      newItem = {id: todoList[todoList.length-1].id + 1, value: "", category: selectedTodoCategory, isDone: false, isFavorite: false };
     else 
-      newItem = {id: 1, value: "" };
+      newItem = {id: 1, value: "", category: selectedTodoCategory, isDone: false };
     addTodoItem([...todoList, newItem ]);
     setSelectedTodo(newItem);
   }
@@ -94,7 +103,7 @@ let MainContent = ({addTodoItem, todoList}) => {
           split={true}
           // bordered={true}
           itemLayout="horizontal"
-          dataSource={todoList}
+          dataSource={stateTodoList}
           renderItem={item => (
             <List.Item className={`list-item ${item.isDone && 'todo-completed'}`}>
               <List.Item.Meta
@@ -115,10 +124,11 @@ let MainContent = ({addTodoItem, todoList}) => {
 }
 
 const mapStateToProps = ({ todo }) => {
-  const { todoList } = todo;
+  const { todoList, selectedTodoCategory } = todo;
 
   return {
-    todoList
+    todoList,
+    selectedTodoCategory
   };
 };
 

@@ -7,9 +7,9 @@ import { faPlusCircle, faList, faWindowClose, faStar, faEdit } from '@fortawesom
 import { connect } from "react-redux";
 
 import AddCategoryModal from 'components/modal/AddCategoryModal';
-import {addCategory} from 'actions/Todo';
+import {addCategory, selectTodoCategory} from 'actions/Todo';
 
-let SidebarContent = ({addCategory, categoryList}) => {
+let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTodoCategory}) => {
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false),
         [selectedCategory,setSelectedCategory] = useState(null);
 
@@ -56,6 +56,11 @@ let SidebarContent = ({addCategory, categoryList}) => {
     setShowAddCategoryModal(true)
   }
 
+  const onCategorySelect = (item) => {
+    debugger;
+    selectTodoCategory(item.id);
+  }
+
   return (
     <div className="sidebar-wrapper">
       <div className="add-more-icon cursor-pointer">
@@ -67,7 +72,7 @@ let SidebarContent = ({addCategory, categoryList}) => {
           bordered={true}
           dataSource={categoryList}
           renderItem={item => (
-            <List.Item key={item.id} className="list-item">
+            <List.Item key={item.id} className={`list-item ${item.id === selectedTodoCategory && 'selected-category'}`} onClick={() => onCategorySelect(item)}>
               <List.Item.Meta
                 avatar={
                   <FontAwesomeIcon icon={item.id === 0 ? faStar : faList} />
@@ -95,16 +100,18 @@ let SidebarContent = ({addCategory, categoryList}) => {
 
 // export default SidebarContent;
 const mapStateToProps = ({ todo }) => {
-  const { categoryList } = todo;
+  const { categoryList, selectedTodoCategory } = todo;
 
   return {
-    categoryList
+    categoryList,
+    selectedTodoCategory
   };
 };
 
 export default connect(
   mapStateToProps,
   {
-    addCategory
+    addCategory,
+    selectTodoCategory
   }
 )(SidebarContent);
