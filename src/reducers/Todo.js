@@ -1,9 +1,18 @@
-import { ADD_CATEGORY } from 'constants/ActionTypes';
+import { ADD_CATEGORY, ADD_TODO_ITEM } from 'constants/ActionTypes';
 
 const INIT_STATE = {
   loader: true,
   categoryList: [],
-  todoList: []
+  todoList: [{
+    id: 2,
+    title: 'Ant Design Title 2',
+    isFavorite: true
+  },
+  {
+    id: 3,
+    title: 'Ant Design Title 3',
+    isFavorite: false
+  }]
 };
 
 
@@ -14,6 +23,13 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         categoryList: action.payload
+      }      
+    }
+
+    case ADD_TODO_ITEM: {
+      debugger;
+      return {
+        ...state
       }      
     }
 

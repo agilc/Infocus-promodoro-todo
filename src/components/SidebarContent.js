@@ -7,7 +7,7 @@ import { faPlusCircle, faList, faWindowClose, faStar, faEdit } from '@fortawesom
 import { connect } from "react-redux";
 
 import AddCategoryModal from 'components/modal/AddCategoryModal';
-import {addCategory} from 'actions/Categories';
+import {addCategory} from 'actions/Todo';
 
 let SidebarContent = ({addCategory, categoryList}) => {
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false),
