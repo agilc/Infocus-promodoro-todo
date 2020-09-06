@@ -12,6 +12,7 @@ export const addCategory = (data) => {
 
 export const addTodoItem = (data) => {
   return {
-    type: ADD_TODO_ITEM
+    type: ADD_TODO_ITEM,
+    payload: data
   };
 };

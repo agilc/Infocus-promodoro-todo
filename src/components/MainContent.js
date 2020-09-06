@@ -7,20 +7,8 @@ import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 
 import { addTodoItem } from 'actions/Todo';
 
-let MainContent = ({}) => {
-  const [selectedTodo, setSelectedTodo] = useState({}),
-        [todoList, setTodoList] = useState([{
-          id: 2,
-          value: 'Ant Design Title 2',
-          isFavorite: true,
-          isDone: true
-        },
-        {
-          id: 3,
-          value: 'Ant Design Title 3',
-          isFavorite: false,
-          isDone: false
-        }]);
+let MainContent = ({addTodoItem, todoList}) => {
+  const [selectedTodo, setSelectedTodo] = useState({});
 
   const onTodoListItemChange = (e) => {
     debugger;
@@ -30,7 +18,7 @@ let MainContent = ({}) => {
         return { 'id': item.id, 'value': value, 'isFavorite': false };
       return item;
     })
-    setTodoList(updatedTodoList);
+    addTodoItem(updatedTodoList);
     setSelectedTodo({...selectedTodo, value: value});
     console.log(e);
   }
@@ -47,20 +35,21 @@ let MainContent = ({}) => {
   }
 
   const onTodoItemAdd = (e) => {
+    debugger;
     e.stopPropagation();
     let newItem = [];
-    if(todoList.length)
+    if(todoList && todoList.length>0)
       newItem = {id: todoList[todoList.length-1].id + 1, value: "" };
     else 
       newItem = {id: 1, value: "" };
-    setTodoList([...todoList, newItem ]);
+    addTodoItem([...todoList, newItem ]);
     setSelectedTodo(newItem);
   }
 
   const onTodoItemDelete = (e, todoItem) => {
     e.stopPropagation();
     let updatedTodoList = todoList.filter(item => item.id !== todoItem.id);
-    setTodoList(updatedTodoList);
+    addTodoItem(updatedTodoList);
   }
 
   const addToFavourites = (e, todoItem) => {
@@ -70,7 +59,7 @@ let MainContent = ({}) => {
         return { ...todoItem , 'isFavorite': !todoItem.isFavorite };
       return item;
     })
-    setTodoList(updatedTodoList);
+    addTodoItem(updatedTodoList);
   }
 
   const onTodoItemComplete = e => {
@@ -82,7 +71,7 @@ let MainContent = ({}) => {
         return { ...item , 'isDone': !item.isDone };
       return item;
     })
-    setTodoList(updatedTodoList);
+    addTodoItem(updatedTodoList);
     console.log(e.target.value);
   }
 

@@ -3,16 +3,7 @@ import { ADD_CATEGORY, ADD_TODO_ITEM } from 'constants/ActionTypes';
 const INIT_STATE = {
   loader: true,
   categoryList: [],
-  todoList: [{
-    id: 2,
-    title: 'Ant Design Title 2',
-    isFavorite: true
-  },
-  {
-    id: 3,
-    title: 'Ant Design Title 3',
-    isFavorite: false
-  }]
+  todoList: []
 };
 
 
@@ -27,21 +18,30 @@ export default (state = INIT_STATE, action) => {
     }
 
     case ADD_TODO_ITEM: {
-      debugger;
+      localStorage.setItem('todo_list', JSON.stringify(action.payload));
       return {
-        ...state
+        ...state,
+        todoList: action.payload
       }      
     }
 
     default:
-      let currentTodoCategories = JSON.parse(localStorage.getItem('todo_categories'));
+      let currentTodoCategories=[];
+      if(localStorage.getItem('todo_categories'))
+        currentTodoCategories = JSON.parse(localStorage.getItem('todo_categories'));
+        
+      let todoList = []
+      if(localStorage.getItem('todo_list'))
+        todoList = JSON.parse(localStorage.getItem('todo_list'));
+
       if(currentTodoCategories)
         currentTodoCategories = [ {id: 0, value: "Favorites"}, ...currentTodoCategories];
       else
         currentTodoCategories = [ {id: 0, value: "Favorites"}];
       return {
         ...state,
-        categoryList: currentTodoCategories
+        categoryList: currentTodoCategories,
+        todoList: todoList
       }  
   }
 }
