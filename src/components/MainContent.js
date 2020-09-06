@@ -12,27 +12,18 @@ let MainContent = ({}) => {
         [todoList, setTodoList] = useState([{
           id: 2,
           value: 'Ant Design Title 2',
-          isFavorite: true
+          isFavorite: true,
+          isDone: true
         },
         {
           id: 3,
           value: 'Ant Design Title 3',
-          isFavorite: false
+          isFavorite: false,
+          isDone: false
         }]);
 
-  const getTodoListContent = (todoItem) => {
-    return (
-      <div className="todo-item-wrapper">
-        { selectedTodo.id === todoItem.id ? <Input placeholder="Basic usage" onChange={e => onTodoListItemChange(e)}/> :  <div>{todoItem.value}</div> }
-        <div className="todo-action-btn">
-          <div className="action-item"><FontAwesomeIcon icon={todoItem.isFavorite ? faStar : faStarRegular } onClick={(e) => addToFavourites(e, todoItem)}/></div> 
-          <div className="action-item"><FontAwesomeIcon icon={faWindowClose} onClick={(e) => onTodoItemDelete(e, todoItem)}/></div> 
-        </div>
-      </div>
-    )
-  }
-
   const onTodoListItemChange = (e) => {
+    debugger;
     let value = e.target.value;
     let updatedTodoList = todoList.map(item => {
       if(item.id === selectedTodo.id)
@@ -40,7 +31,14 @@ let MainContent = ({}) => {
       return item;
     })
     setTodoList(updatedTodoList);
+    setSelectedTodo({...selectedTodo, value: value});
     console.log(e);
+  }
+
+  const onTodoItemKeyUp = e => {
+    if(e.keyCode === 13){
+      setSelectedTodo({});
+    }
   }
 
   const onTodoItemSelect = (e, item) => {
@@ -75,6 +73,31 @@ let MainContent = ({}) => {
     setTodoList(updatedTodoList);
   }
 
+  const onTodoItemComplete = e => {
+    debugger;
+    e.stopPropagation();
+    let value = e.target.value;
+    let updatedTodoList = todoList.map(item => {
+      if(item.id == value)
+        return { ...item , 'isDone': !item.isDone };
+      return item;
+    })
+    setTodoList(updatedTodoList);
+    console.log(e.target.value);
+  }
+
+  const getTodoListContent = (todoItem) => {
+    return (
+      <div className="todo-item-wrapper">
+        { selectedTodo.id === todoItem.id ? <Input value={selectedTodo.value} onChange={e => onTodoListItemChange(e)} onKeyUp={onTodoItemKeyUp}/> :  <div>{todoItem.value}</div> }
+        <div className="todo-action-btn">
+          <div className="action-item"><FontAwesomeIcon icon={todoItem.isFavorite ? faStar : faStarRegular } onClick={(e) => addToFavourites(e, todoItem)}/></div> 
+          <div className="action-item"><FontAwesomeIcon icon={faWindowClose} onClick={(e) => onTodoItemDelete(e, todoItem)}/></div> 
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="main-content-wrapper" onClick={() => setSelectedTodo({})}>
       <div className="todo-items-list">
@@ -84,9 +107,9 @@ let MainContent = ({}) => {
           itemLayout="horizontal"
           dataSource={todoList}
           renderItem={item => (
-            <List.Item className="list-item">
+            <List.Item className={`list-item ${item.isDone && 'todo-completed'}`}>
               <List.Item.Meta
-                avatar={selectedTodo.id !== item.id && <Radio></Radio>}
+                avatar={selectedTodo.id !== item.id && <Radio value={item.id} checked={item.isDone} onClick={onTodoItemComplete}></Radio>}
                 title={getTodoListContent(item)}
                 // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                 onClick={(e) => onTodoItemSelect(e, item)}

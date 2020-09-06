@@ -1,20 +1,21 @@
 import React from 'react';
 import { Select, Col, Row } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { connect } from 'react-redux';
 
 const { Option } = Select;
 
-let Header = () => {
+let Header = ({categoryList}) => {
 
   return (
     <div className="header-wrapper">
       <Col span={22}>
         <div className="category-select">
           <Select defaultValue="lucy" style={{width: 200}} onChange={() => {}}>
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy fjdskjfhkjshfkdskf ljkhkhkjh</Option>
-            <Option value="Yiminghe">yiminghe</Option>
+            {
+              categoryList.map(item =>{
+                return <Option value={item.id}>{item.value}</Option>
+              })
+            }
           </Select>
         </div>
       </Col>
@@ -25,4 +26,11 @@ let Header = () => {
   )
 }
 
-export default Header;
+const mapStateToProps = ({ todo }) => {
+  const { categoryList } = todo;
+  return {
+    categoryList
+  };
+};
+
+export default connect(mapStateToProps)(Header);
