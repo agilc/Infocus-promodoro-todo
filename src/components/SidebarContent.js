@@ -15,6 +15,7 @@ let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTo
 
   useEffect(()=> {
     let currentTodoCategories = [];
+    loanDataFromStorage();
     // chrome.storage.local.get(['todo_categories'], function(result) {
     //   if(result.todo_categories)
     //     currentTodoCategories = JSON.parse(result.todo_categories);
@@ -23,6 +24,27 @@ let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTo
     // if(localStorage.getItem('todo_categories'))
     //   currentTodoCategories = JSON.parse(localStorage.getItem('todo_categories'));
   }, []);
+
+  const loanDataFromStorage = () => {
+    let currentTodoCategories=[{id: 0, value: "Favorites"}];
+    let todoList = [];
+    let selectedTodoCategory = '';
+    chrome.storage.local.get(['todo_categories'], function(result) {
+      if(result.todo_categories){
+        currentTodoCategories = [...currentTodoCategories, ...JSON.parse(result.todo_categories)];
+      }
+      addCategory(currentTodoCategories);
+    });
+    chrome.storage.local.get(['todo_list'], function(result) {
+      if(result.todo_list)
+        todoList = JSON.parse(result.todo_list);
+      addTodoItem(todoList)
+    });
+    chrome.storage.local.get(['selected_todo_category'], function(result) {
+      selectedTodoCategory = result.selected_todo_category;
+      selectTodoCategory(parseInt(selectedTodoCategory));
+    });
+  }
 
   const onCategoryAdd = (categoryName) => {
     const categoryCount = categoryList.length;
