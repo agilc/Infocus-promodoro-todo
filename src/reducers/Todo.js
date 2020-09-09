@@ -69,9 +69,9 @@ export default (state = INIT_STATE, action) => {
       // selectedTodoCategory = JSON.parse(localStorage.getItem('selected_todo_category'));
       return {
         ...state,
-        categoryList: currentTodoCategories,
-        todoList: todoList,
-        selectedTodoCategory: selectedTodoCategory
+        // categoryList: currentTodoCategories,
+        // todoList: todoList,
+        // selectedTodoCategory: selectedTodoCategory
       }  
   }
 }
