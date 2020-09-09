@@ -18,7 +18,7 @@ export default (state = INIT_STATE, action) => {
   switch (action.type) {
     case ADD_CATEGORY: {
       // localStorage.setItem('todo_categories', JSON.stringify(action.payload.slice(1)));
-      chrome.storage.local.set({'todo_categories': JSON.stringify(action.payload.slice(1))});
+      chrome.storage && chrome.storage.local.set({'todo_categories': JSON.stringify(action.payload.slice(1))});
       return {
         ...state,
         categoryList: action.payload
@@ -26,8 +26,8 @@ export default (state = INIT_STATE, action) => {
     }
 
     case ADD_TODO_ITEM: {
-      localStorage.setItem('todo_list', JSON.stringify(action.payload));
-      // chrome.storage.local.set({'todo_list': JSON.stringify(action.payload)});
+      // localStorage.setItem('todo_list', JSON.stringify(action.payload));
+      chrome.storage && chrome.storage.local.set({'todo_list': JSON.stringify(action.payload)});
       return {
         ...state,
         todoList: action.payload
@@ -36,7 +36,7 @@ export default (state = INIT_STATE, action) => {
 
     case SELECT_TODO_CATEGORY: {
       // localStorage.setItem('selected_todo_category', JSON.stringify(action.payload));
-      chrome.storage.local.set({'selected_todo_category': JSON.stringify(action.payload)});
+      chrome.storage && chrome.storage.local.set({'selected_todo_category': JSON.stringify(action.payload)});
       return {
         ...state,
         selectedTodoCategory: action.payload

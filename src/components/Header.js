@@ -16,7 +16,7 @@ let Header = ({categoryList, selectTodoCategory, selectedTodoCategory}) => {
     <div className="header-wrapper">
       <Col span={22}>
         <div className="category-select">
-          <Select defaultValue={selectedTodoCategory} value={selectedTodoCategory} style={{width: 200}} onChange={onCategoryChange}>
+          <Select defaultValue={selectedTodoCategory} value={selectedTodoCategory} placeholder="Select" style={{width: 200}} onChange={onCategoryChange}>
             {
               categoryList.map(item =>{
                 return <Option key={item.id} value={item.id}>{item.value}</Option>

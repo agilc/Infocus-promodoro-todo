@@ -29,18 +29,18 @@ let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTo
     let currentTodoCategories=[{id: 0, value: "Favorites"}];
     let todoList = [];
     let selectedTodoCategory = '';
-    chrome.storage.local.get(['todo_categories'], function(result) {
+    chrome.storage && chrome.storage.local.get(['todo_categories'], function(result) {
       if(result.todo_categories){
         currentTodoCategories = [...currentTodoCategories, ...JSON.parse(result.todo_categories)];
       }
       addCategory(currentTodoCategories);
     });
-    chrome.storage.local.get(['todo_list'], function(result) {
+    chrome.storage && chrome.storage.local.get(['todo_list'], function(result) {
       if(result.todo_list)
         todoList = JSON.parse(result.todo_list);
       addTodoItem(todoList)
     });
-    chrome.storage.local.get(['selected_todo_category'], function(result) {
+    chrome.storage && chrome.storage.local.get(['selected_todo_category'], function(result) {
       selectedTodoCategory = result.selected_todo_category;
       selectTodoCategory(parseInt(selectedTodoCategory));
     });
@@ -68,11 +68,15 @@ let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTo
   }
 
   const onCategoryRemove = (categoryId) => {
+    debugger;
     const updatedTodoCategories = categoryList.filter(item => item.id !== categoryId);
     // chrome.storage.local.set({todo_categories: JSON.stringify(updatedTodoCategories.slice(1))})
     addCategory(updatedTodoCategories);
     let updatedTodoList = todoList.filter(item => item.category !== categoryId);
     addTodoItem(updatedTodoList);
+    if(selectedTodoCategory === categoryId){
+      selectTodoCategory(undefined);
+    }
   }
 
   const onCategoryEdit = (category) => {
@@ -81,7 +85,6 @@ let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTo
   }
 
   const onCategorySelect = (item) => {
-    debugger;
     selectTodoCategory(item.id);
   }
 
