@@ -17,7 +17,7 @@ const INIT_STATE = {
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
     case ADD_CATEGORY: {
-      // localStorage.setItem('todo_categories', JSON.stringify(action.payload.slice(1)));
+      localStorage.setItem('todo_categories', JSON.stringify(action.payload.slice(1)));
       chrome.storage && chrome.storage.local.set({'todo_categories': JSON.stringify(action.payload.slice(1))});
       return {
         ...state,
@@ -26,7 +26,7 @@ export default (state = INIT_STATE, action) => {
     }
 
     case ADD_TODO_ITEM: {
-      // localStorage.setItem('todo_list', JSON.stringify(action.payload));
+      localStorage.setItem('todo_list', JSON.stringify(action.payload));
       chrome.storage && chrome.storage.local.set({'todo_list': JSON.stringify(action.payload)});
       return {
         ...state,
@@ -35,7 +35,7 @@ export default (state = INIT_STATE, action) => {
     }
 
     case SELECT_TODO_CATEGORY: {
-      // localStorage.setItem('selected_todo_category', JSON.stringify(action.payload));
+      localStorage.setItem('selected_todo_category', JSON.stringify(action.payload));
       chrome.storage && chrome.storage.local.set({'selected_todo_category': JSON.stringify(action.payload)});
       return {
         ...state,
@@ -44,9 +44,9 @@ export default (state = INIT_STATE, action) => {
     }
 
     default:
-      // let currentTodoCategories=[{id: 0, value: "Favorites"}];
-      // let todoList = [];
-      // let selectedTodoCategory = '';
+      let currentTodoCategories=[{id: 0, value: "Favorites"}];
+      let todoList = [];
+      let selectedTodoCategory = '';
 
       // chrome.storage.local.get(['todo_categories'], function(result) {
       //   if(result.todo_categories){
@@ -61,17 +61,17 @@ export default (state = INIT_STATE, action) => {
       //   selectedTodoCategory = result.selected_todo_category;
       // });
 
-      // if(localStorage.getItem('todo_categories'))
-      //   currentTodoCategories = [ {id: 0, value: "Favorites"}, ...JSON.parse(localStorage.getItem('todo_categories'))];
-      // if(localStorage.getItem('todo_list'))
-      //   todoList = JSON.parse(localStorage.getItem('todo_list'));
+      if(localStorage.getItem('todo_categories'))
+        currentTodoCategories = [ {id: 0, value: "Favorites"}, ...JSON.parse(localStorage.getItem('todo_categories'))];
+      if(localStorage.getItem('todo_list'))
+        todoList = JSON.parse(localStorage.getItem('todo_list'));
 
-      // selectedTodoCategory = JSON.parse(localStorage.getItem('selected_todo_category'));
+      selectedTodoCategory = JSON.parse(localStorage.getItem('selected_todo_category'));
       return {
         ...state,
-        // categoryList: currentTodoCategories,
-        // todoList: todoList,
-        // selectedTodoCategory: selectedTodoCategory
+        categoryList: currentTodoCategories,
+        todoList: todoList,
+        selectedTodoCategory: selectedTodoCategory
       }  
   }
 }

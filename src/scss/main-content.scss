@@ -38,10 +38,28 @@
   .todo-item-wrapper {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    .timer-wrapper {
+      display: flex;
+      align-items: center;
+
+      button {
+        padding: 5px 12px;
+        height: 35px;
+        width: 35px;
+      }
+    }
+
+    .pomodoro-play-btn {
+      color: rgb(1, 70, 173);
+      font-size: 20px;
+    }
 
     .todo-action-btn {
       display: flex;
       align-items: center;
+      margin: 0 1%;
 
       .action-item {
         margin: 0 10px;

@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { List, Input, Radio } from 'antd';
+import { List, Input, Radio, Button } from 'antd';
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faList, faWindowClose, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle, faList, faWindowClose, faStar, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
+import { DownloadOutlined } from '@ant-design/icons';
 
 import { addTodoItem } from 'actions/Todo';
 
+const POMODORO_TIME = 10;
+
 let MainContent = ({addTodoItem, todoList, selectedTodoCategory}) => {
   const [selectedTodo, setSelectedTodo] = useState({}),
-        [stateTodoList, setStateTodoList] = useState([]);
+        [stateTodoList, setStateTodoList] = useState([]),
+        [currentPomodoroTodo, setCurrentPomodoroTodo] = useState(null);
 
   useEffect(() => {
     updateTodoList();
@@ -91,11 +96,41 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory}) => {
     console.log(e.target.value);
   }
 
+  const onPomodoroStart = (e,todoItem) => {
+    e.stopPropagation();
+    setCurrentPomodoroTodo(todoItem);
+  }
+
   const getTodoListContent = (todoItem) => {
     return (
       <div className="todo-item-wrapper">
         { selectedTodo.id === todoItem.id ? <Input value={selectedTodo.value} onChange={e => onTodoListItemChange(e)} onKeyUp={onTodoItemKeyUp}/> :  <div>{todoItem.value}</div> }
         <div className="todo-action-btn">
+          <div className="timer-wrapper">
+            {
+              currentPomodoroTodo ? 
+              <CountdownCircleTimer
+                isPlaying={currentPomodoroTodo}
+                duration={POMODORO_TIME}
+                size={35}
+                strokeWidth={2}
+                strokeLinecap={2}
+                trailColor="white"
+                isLinearGradient={true}
+                ariaLabel="AGil"
+                colors={[
+                  ['#0146ad', 0.33],
+                  ['#0147ad', 0.33],
+                  ['#438bfc', 0.33]
+                ]}
+                onComplete={() => setCurrentPomodoroTodo(null)}
+              >
+                {({ remainingTime }) => parseInt(remainingTime/60)}
+              </CountdownCircleTimer>
+              : <Button type="primary" shape="circle" onClick={(e) => onPomodoroStart(e,todoItem)} icon={<FontAwesomeIcon icon={faPlay} style={{color:'#427bfb'}}/>} style={{backgroundColor:'white'}}/>
+            }
+          </div>
+        
           <div className="action-item"><FontAwesomeIcon icon={todoItem.isFavorite ? faStar : faStarRegular } onClick={(e) => addToFavourites(e, todoItem)}/></div> 
           <div className="action-item"><FontAwesomeIcon icon={faWindowClose} onClick={(e) => onTodoItemDelete(e, todoItem)}/></div> 
         </div>
