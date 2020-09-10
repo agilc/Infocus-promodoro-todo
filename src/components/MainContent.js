@@ -12,7 +12,7 @@ import { showNotification } from 'utils/notification';
 
 import { addTodoItem, startPomodoro } from 'actions/Todo';
 
-const POMODORO_TIME = 1000;
+const POMODORO_TIME = 1500;
 
 let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro}) => {
   const [selectedTodo, setSelectedTodo] = useState({}),
@@ -147,7 +147,8 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
               currentPomodoroTodo && currentPomodoroTodo.id === todoItem.id ? 
               <CountdownCircleTimer
                 isPlaying={currentPomodoroTodo.id === todoItem.id}
-                duration={pomodoroDetails.remainingTime}
+                duration={POMODORO_TIME}
+                initialRemainingTime={pomodoroDetails.remainingTime}
                 size={35}
                 strokeWidth={2}
                 strokeLinecap={2}

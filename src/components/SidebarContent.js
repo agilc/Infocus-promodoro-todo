@@ -106,7 +106,11 @@ let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTo
                 }
                 title={<div>{item.value}</div>}
               />
-              <div className="item-count">12</div>
+              {
+                item.id === 0 ?
+                <div className="item-count">{todoList.filter(todo=> todo.isFavorite).length}</div>
+                : <div className="item-count">{todoList.filter(todo=> todo.category === item.id).length}</div>
+              }
               { item.id !== 0 && <div className="item-remove"><FontAwesomeIcon icon={faEdit} onClick={() => onCategoryEdit(item)}/></div> }
               { item.id !== 0 && <div className="item-remove"><FontAwesomeIcon icon={faWindowClose} onClick={() => onCategoryRemove(item.id)}/></div> }
             </List.Item>
