@@ -1,3 +1,5 @@
+/* global chrome */
+
 import React, { useState, useEffect } from 'react';
 import { List, Input, Radio, Button,notification } from 'antd';
 import { connect } from "react-redux";
@@ -8,14 +10,40 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
 import { showNotification } from 'utils/notification';
 
-import { addTodoItem } from 'actions/Todo';
+import { addTodoItem, startPomodoro } from 'actions/Todo';
 
-const POMODORO_TIME = 10;
+const POMODORO_TIME = 1000;
 
-let MainContent = ({addTodoItem, todoList, selectedTodoCategory}) => {
+let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro}) => {
   const [selectedTodo, setSelectedTodo] = useState({}),
         [stateTodoList, setStateTodoList] = useState([]),
-        [currentPomodoroTodo, setCurrentPomodoroTodo] = useState(null);
+        [currentPomodoroTodo, setCurrentPomodoroTodo] = useState(null),
+        [pomodoroDetails, setPomodoroDetails] = useState({});
+
+  useEffect(() => {
+    chrome.storage && chrome.storage.local.get(['current_pomodoro'], function(result) {
+      debugger;
+      if(result.todo_categories){
+        let time = result.todo_categories.startTime;
+        let remainingTime = POMODORO_TIME - (Date.now()-time)/1000;
+        setPomodoroDetails({...result.todo_categories, remainingTime: remainingTime});
+        if(remainingTime > 0){
+          setCurrentPomodoroTodo(todo_categories)
+        }
+      }
+    });
+
+    debugger;
+    let todo_categories = JSON.parse(localStorage.getItem('current_pomodoro'));
+    if(todo_categories){
+      let time = todo_categories.startTime;
+      let remainingTime = POMODORO_TIME - (Date.now()-time)/1000;
+      setPomodoroDetails({...todo_categories, remainingTime: remainingTime });
+      if(remainingTime > 0){
+        setCurrentPomodoroTodo(todo_categories.todo);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     updateTodoList();
@@ -100,6 +128,8 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory}) => {
   const onPomodoroStart = (e,todoItem) => {
     e.stopPropagation();
     setCurrentPomodoroTodo(todoItem);
+    startPomodoro({startTime: Date.now(), todo: todoItem, remainingTime: POMODORO_TIME});
+    setPomodoroDetails({startTime: Date.now(), todo: todoItem, remainingTime: POMODORO_TIME});
   }
 
   const onPomodoroEnd = (e,todoItem) => {
@@ -117,7 +147,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory}) => {
               currentPomodoroTodo && currentPomodoroTodo.id === todoItem.id ? 
               <CountdownCircleTimer
                 isPlaying={currentPomodoroTodo.id === todoItem.id}
-                duration={POMODORO_TIME}
+                duration={pomodoroDetails.remainingTime}
                 size={35}
                 strokeWidth={2}
                 strokeLinecap={2}
@@ -186,6 +216,7 @@ const mapStateToProps = ({ todo }) => {
 export default connect(
   mapStateToProps,
   {
-    addTodoItem
+    addTodoItem,
+    startPomodoro
   }
 )(MainContent);

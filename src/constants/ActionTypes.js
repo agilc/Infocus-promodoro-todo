@@ -11,3 +11,6 @@ export const SELECT_TODO_CATEGORY = "select_todo_category"
 
 // Todo constants
 export const ADD_TODO_ITEM = "add_todo_item";
+
+//Pomodoro constants
+export const START_PMODORO = "start_pomodoro"

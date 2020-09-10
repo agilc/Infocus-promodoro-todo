@@ -3,14 +3,16 @@
 import { 
   ADD_CATEGORY, 
   ADD_TODO_ITEM,
-  SELECT_TODO_CATEGORY
+  SELECT_TODO_CATEGORY,
+  START_PMODORO
  } from 'constants/ActionTypes';
 
 const INIT_STATE = {
   loader: true,
   categoryList: [],
   todoList: [],
-  selectedTodoCategory: null
+  selectedTodoCategory: null,
+  currentPomodoro: {}
 };
 
 
@@ -40,6 +42,15 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         selectedTodoCategory: action.payload
+      }      
+    }
+
+    case START_PMODORO: {
+      localStorage.setItem('current_pomodoro', JSON.stringify(action.payload));
+      chrome.storage && chrome.storage.local.set({'selected_todo_category': JSON.stringify(action.payload)});
+      return {
+        ...state,
+        currentPomodoro: action.payload
       }      
     }
 

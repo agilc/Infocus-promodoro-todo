@@ -1,7 +1,8 @@
 import {
   ADD_CATEGORY,
   ADD_TODO_ITEM,
-  SELECT_TODO_CATEGORY
+  SELECT_TODO_CATEGORY,
+  START_PMODORO
 } from 'constants/ActionTypes';
 
 export const addCategory = (data) => {
@@ -25,3 +26,12 @@ export const selectTodoCategory = (data) => {
     payload: data
   };
 };
+
+export const startPomodoro = (data) => {
+  debugger;
+  return {
+    type: START_PMODORO,
+    payload: data
+  };
+};
+
