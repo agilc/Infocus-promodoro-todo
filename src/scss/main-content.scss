@@ -5,6 +5,10 @@
     border-radius: 5px;
     background-color: #e2e2e2;
 
+    .ant-radio-wrapper {
+      margin-top: 6px;
+    }
+
     .todo-completed {
       text-decoration: line-through;
       background-color: #ececec;
@@ -13,11 +17,11 @@
 
   .list-item {
     padding: 0% 4%;
-    height: 60px;
-    font-size: large;
+    height: 50px;
+    // font-size: large;
 
     div {
-      font-size: large;
+      // font-size: large;
     }
 
     &:hover {
@@ -45,9 +49,9 @@
       align-items: center;
 
       button {
-        padding: 5px 12px;
-        height: 35px;
-        width: 35px;
+        padding: 2px 10px;
+        height: 30px;
+        width: 30px;
       }
     }
 

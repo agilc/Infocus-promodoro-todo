@@ -73,9 +73,12 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
     console.log(e);
   }
 
-  const onTodoItemKeyUp = e => {
+  const onTodoItemKeyDown = e => {
     if(e.keyCode === 13){
       setSelectedTodo({});
+    }
+    if(selectedTodo.value && selectedTodo.value.length >=75){
+      e.preventDefault();
     }
   }
 
@@ -140,7 +143,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
   const getTodoListContent = (todoItem) => {
     return (
       <div className="todo-item-wrapper">
-        { selectedTodo.id === todoItem.id ? <Input value={selectedTodo.value} onChange={e => onTodoListItemChange(e)} onKeyUp={onTodoItemKeyUp}/> :  <div>{todoItem.value}</div> }
+        { selectedTodo.id === todoItem.id ? <Input value={selectedTodo.value} onChange={e => onTodoListItemChange(e)} onKeyDown={onTodoItemKeyDown}/> :  <div>{todoItem.value}</div> }
         <div className="todo-action-btn">
           <div className="timer-wrapper">
             {
@@ -149,7 +152,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
                 isPlaying={currentPomodoroTodo.id === todoItem.id}
                 duration={POMODORO_TIME}
                 initialRemainingTime={pomodoroDetails.remainingTime}
-                size={35}
+                size={30}
                 strokeWidth={2}
                 strokeLinecap={2}
                 trailColor="white"

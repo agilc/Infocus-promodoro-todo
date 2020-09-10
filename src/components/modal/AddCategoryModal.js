@@ -31,7 +31,7 @@ let AddCategoryModal = ({ show, onConfirm, onCancel, title, selectedCategory}) =
     >
       <div className="modal-wrapper">
         <div className="modal-title">{title}</div>
-        <Input placeholder="Enter category name" value={categoryName} onChange={onCategoryChange}/>
+        <Input placeholder="Enter category name" value={categoryName} onChange={onCategoryChange} maxLength={20}/>
         <div className="modal-footer">
           <Button type="default" icon={<FontAwesomeIcon icon={faWindowClose} />} onClick={onCancel}>Cancel</Button>
           <Button type="primary" icon={<FontAwesomeIcon icon={faSave} />} onClick={onSave}>Save</Button>
