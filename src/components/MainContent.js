@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { List, Input, Radio, Button } from 'antd';
+import { List, Input, Radio, Button,notification } from 'antd';
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faList, faWindowClose, faStar, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
-import { DownloadOutlined } from '@ant-design/icons';
+
+import { showNotification } from 'utils/notification';
 
 import { addTodoItem } from 'actions/Todo';
 
@@ -101,6 +102,11 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory}) => {
     setCurrentPomodoroTodo(todoItem);
   }
 
+  const onPomodoroEnd = (e,todoItem) => {
+    setCurrentPomodoroTodo(null);
+    showNotification("Pomodoro session completed", "success")
+  }
+
   const getTodoListContent = (todoItem) => {
     return (
       <div className="todo-item-wrapper">
@@ -108,9 +114,9 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory}) => {
         <div className="todo-action-btn">
           <div className="timer-wrapper">
             {
-              currentPomodoroTodo ? 
+              currentPomodoroTodo && currentPomodoroTodo.id === todoItem.id ? 
               <CountdownCircleTimer
-                isPlaying={currentPomodoroTodo}
+                isPlaying={currentPomodoroTodo.id === todoItem.id}
                 duration={POMODORO_TIME}
                 size={35}
                 strokeWidth={2}
@@ -123,7 +129,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory}) => {
                   ['#0147ad', 0.33],
                   ['#438bfc', 0.33]
                 ]}
-                onComplete={() => setCurrentPomodoroTodo(null)}
+                onComplete={onPomodoroEnd}
               >
                 {({ remainingTime }) => parseInt(remainingTime/60)}
               </CountdownCircleTimer>
