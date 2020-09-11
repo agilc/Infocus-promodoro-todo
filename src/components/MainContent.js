@@ -11,6 +11,8 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { showNotification } from 'utils/notification';
 
 import { addTodoItem, startPomodoro } from 'actions/Todo';
+import WarningModal from 'components/modal/WarningModal';
+import { flush } from 'redux-saga/effects';
 
 const POMODORO_TIME = 1500;
 
@@ -18,7 +20,9 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
   const [selectedTodo, setSelectedTodo] = useState({}),
         [stateTodoList, setStateTodoList] = useState([]),
         [currentPomodoroTodo, setCurrentPomodoroTodo] = useState(null),
-        [pomodoroDetails, setPomodoroDetails] = useState({});
+        [pomodoroDetails, setPomodoroDetails] = useState({}),
+        [secondPomodoroDetails, setSecondPomodoroDetails] = useState({}),
+        [showPomodoroInterruptModal, setShowPomodoroInterruptModal] = useState(false);
 
   useEffect(() => {
     chrome.storage && chrome.storage.local.get(['current_pomodoro'], function(result) {
@@ -137,9 +141,22 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
 
   const onPomodoroStart = (e,todoItem) => {
     e.stopPropagation();
+    if(pomodoroDetails && pomodoroDetails.startTime){
+      setShowPomodoroInterruptModal(true);
+      setSecondPomodoroDetails({startTime: Date.now(), todo: todoItem, remainingTime: POMODORO_TIME})
+      return;
+    }
     setCurrentPomodoroTodo(todoItem);
     startPomodoro({startTime: Date.now(), todo: todoItem, remainingTime: POMODORO_TIME});
     setPomodoroDetails({startTime: Date.now(), todo: todoItem, remainingTime: POMODORO_TIME});
+  }
+
+  const onSecondPomodoroStart = () => {
+    debugger;
+    setCurrentPomodoroTodo(secondPomodoroDetails.todo);
+    startPomodoro(secondPomodoroDetails);
+    setPomodoroDetails(secondPomodoroDetails);
+    setShowPomodoroInterruptModal(false);
   }
 
   const onPomodoroEnd = (e,todoItem) => {
@@ -223,6 +240,15 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
           <FontAwesomeIcon className="cursor-pointer" icon={faPlusCircle} onClick={onTodoItemAdd}/>
         </div>
       }
+      <WarningModal
+        show={showPomodoroInterruptModal}
+        onConfirm={onSecondPomodoroStart}
+        onCancel={() => setShowPomodoroInterruptModal(false)}
+        title="Do you want to continue ?"
+        message="Creating new pomodoro session will end the running pomodoro."
+        successBtnLabel="Ok"
+        cancelBtnLabel="Cancel"
+      />
     </div>
   )
 }

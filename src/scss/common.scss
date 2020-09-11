@@ -4,9 +4,28 @@
 
 .modal-wrapper {
   .modal-title{
-    font-size: large;
-    font-weight: 600;
     margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+
+    .title {
+      font-size: large;
+      font-weight: 600;
+    }
+
+    .message{
+      font-size: small;
+      font-weight: 600;
+    }
+
+    span {
+          margin: 10px;
+    }
+
+    .text-wrapper{
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   button {
@@ -33,4 +52,9 @@
 
 .ant-select-selector {
   background-color: white !important;
+}
+
+.warning-icon {
+  color: #eab450;
+  font-size: xxx-large;
 }
