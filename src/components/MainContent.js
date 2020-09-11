@@ -84,6 +84,10 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
     }
   }
 
+  const onTodoBlur = () => {
+    setSelectedTodo({});
+  }
+
   const onTodoItemSelect = (e, item) => {
     e.stopPropagation();
     setSelectedTodo(item);
@@ -158,7 +162,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
   const getTodoListContent = (todoItem) => {
     return (
       <div className="todo-item-wrapper">
-        { selectedTodo.id === todoItem.id ? <Input value={selectedTodo.value} onChange={e => onTodoListItemChange(e)} onKeyDown={onTodoItemKeyDown}/> :  <div>{todoItem.value}</div> }
+        { selectedTodo.id === todoItem.id ? <Input value={selectedTodo.value} onChange={e => onTodoListItemChange(e)} onKeyDown={onTodoItemKeyDown} onBlur={onTodoBlur}/> :  <div>{todoItem.value}</div> }
         <div className="todo-action-btn">
           <div className="timer-wrapper">
             {
