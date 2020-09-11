@@ -48,5 +48,10 @@
     .selected-category {
       background-color: #0146ad;
     }
+
+    .ant-list-items {
+      height: calc(100vh - 200px);
+      overflow: scroll;
+    }
   }
 }

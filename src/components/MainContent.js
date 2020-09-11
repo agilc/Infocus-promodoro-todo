@@ -75,6 +75,8 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
 
   const onTodoItemKeyDown = e => {
     if(e.keyCode === 13){
+      if(!selectedTodo.value)
+        return;
       setSelectedTodo({});
     }
     if(selectedTodo.value && selectedTodo.value.length >=75){
@@ -88,8 +90,9 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
   }
 
   const onTodoItemAdd = (e) => {
-    debugger;
     e.stopPropagation();
+    if(selectedTodo.id && !selectedTodo.value)
+      return;
     let newItem = [];
     if(todoList && todoList.length>0)
       newItem = {id: todoList[todoList.length-1].id + 1, value: "", category: selectedTodoCategory, isDone: false, isFavorite: false };
@@ -140,6 +143,18 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
     showNotification("Pomodoro session completed", "success")
   }
 
+  const onOutsideClick = () => {
+    setSelectedTodo({});
+    removeEmptyTodos()
+    
+  }
+
+  const removeEmptyTodos = () => {
+    let updatedTodoList = todoList.filter(item => item.value);
+    addTodoItem(updatedTodoList);
+  }
+
+
   const getTodoListContent = (todoItem) => {
     return (
       <div className="todo-item-wrapper">
@@ -179,7 +194,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
   }
 
   return (
-    <div className="main-content-wrapper" onClick={() => setSelectedTodo({})}>
+    <div className="main-content-wrapper" onClick={onOutsideClick}>
       <div className="todo-items-list">
         <List
           split={true}

@@ -4,6 +4,8 @@
   .todo-items-list{
     border-radius: 5px;
     background-color: #e2e2e2;
+    max-height: calc(100vh - 200px);
+    overflow: scroll;
 
     .ant-radio-wrapper {
       margin-top: 6px;
@@ -12,6 +14,10 @@
     .todo-completed {
       text-decoration: line-through;
       background-color: #ececec;
+    }
+
+    li {
+      background-color: #c7c7c7;
     }
   }
 

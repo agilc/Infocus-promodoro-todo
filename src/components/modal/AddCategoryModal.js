@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Input, Button } from 'antd';
+import { Modal, Input, Button, Form } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWindowClose, faSave } from '@fortawesome/free-solid-svg-icons';
 
 
 let AddCategoryModal = ({ show, onConfirm, onCancel, title, selectedCategory}) => {
-  const [categoryName, setCategoryName] = useState();
+  const [categoryName, setCategoryName] = useState("");
 
   useEffect(() => {
     if(selectedCategory && selectedCategory.id)
@@ -17,8 +17,13 @@ let AddCategoryModal = ({ show, onConfirm, onCancel, title, selectedCategory}) =
   }
 
   const onSave = () => {
-    onConfirm(categoryName);
     setCategoryName("");
+    onConfirm(categoryName);
+  }
+
+  const onClose = () => {
+    setCategoryName("");
+    onCancel();
   }
 
   return (
@@ -31,11 +36,29 @@ let AddCategoryModal = ({ show, onConfirm, onCancel, title, selectedCategory}) =
     >
       <div className="modal-wrapper">
         <div className="modal-title">{title}</div>
-        <Input placeholder="Enter category name" value={categoryName} onChange={onCategoryChange} maxLength={20}/>
-        <div className="modal-footer">
-          <Button type="default" icon={<FontAwesomeIcon icon={faWindowClose} />} onClick={onCancel}>Cancel</Button>
-          <Button type="primary" icon={<FontAwesomeIcon icon={faSave} />} onClick={onSave}>Save</Button>
-        </div>
+        <Form
+          name="basic"
+          onFinish={onSave}
+          initialValues={{category_name: ""}}
+          fields={[
+            {
+              "name": [ "category_name" ],
+              "value": categoryName
+            }
+          ]}
+        >
+          <Form.Item
+            label="Category Name"
+            name="category_name"
+            rules={[{ required: true, message: 'Please enter the category name!' }]}
+          >
+            <Input placeholder="Enter category name" onChange={onCategoryChange} maxLength={20}/>
+          </Form.Item>
+          <div className="modal-footer">
+            <Button type="default" icon={<FontAwesomeIcon icon={faWindowClose} />} onClick={onClose}>Cancel</Button>
+            <Button type="primary" htmlType="submit" icon={<FontAwesomeIcon icon={faSave} />}>Save</Button>
+          </div>
+        </Form>
       </div>
     </Modal>
   )
