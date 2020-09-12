@@ -1,3 +1,4 @@
+
 /* global chrome */
 
 import React, { useState, useEffect } from 'react';
@@ -12,7 +13,7 @@ import { showNotification } from 'utils/notification';
 
 import { addTodoItem, startPomodoro } from 'actions/Todo';
 import WarningModal from 'components/modal/WarningModal';
-import { flush } from 'redux-saga/effects';
+import { showChromeNotification } from 'utils/notification';
 
 const POMODORO_TIME = 1500;
 
@@ -26,7 +27,6 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
 
   useEffect(() => {
     chrome.storage && chrome.storage.local.get(['current_pomodoro'], function(result) {
-      debugger;
       if(result.todo_categories){
         let time = result.todo_categories.startTime;
         let remainingTime = POMODORO_TIME - (Date.now()-time)/1000;
@@ -37,7 +37,6 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
       }
     });
 
-    debugger;
     let todo_categories = JSON.parse(localStorage.getItem('current_pomodoro'));
     if(todo_categories){
       let time = todo_categories.startTime;
@@ -149,6 +148,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
     setCurrentPomodoroTodo(todoItem);
     startPomodoro({startTime: Date.now(), todo: todoItem, remainingTime: POMODORO_TIME});
     setPomodoroDetails({startTime: Date.now(), todo: todoItem, remainingTime: POMODORO_TIME});
+    showChromeNotification("Pomodoro session started");
   }
 
   const onSecondPomodoroStart = () => {
@@ -161,7 +161,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
 
   const onPomodoroEnd = (e,todoItem) => {
     setCurrentPomodoroTodo(null);
-    showNotification("Pomodoro session completed", "success")
+    showChromeNotification("Pomodoro session complete!");
   }
 
   const onOutsideClick = () => {
