@@ -11,7 +11,7 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { addTodoItem, startPomodoro } from 'actions/Todo';
 import WarningModal from 'components/modal/WarningModal';
 
-const POMODORO_TIME = 10;
+const POMODORO_TIME = 1500;
 
 let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro}) => {
   const [selectedTodo, setSelectedTodo] = useState({}),
@@ -135,10 +135,10 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
   }
 
   const onPomodoroStart = (e,todoItem) => {
-    chrome.alarms.getAll(function(alarms) {
+    chrome.alarms && chrome.alarms.getAll(function(alarms) {
       console.log(alarms);
     });
-    chrome.alarms.create('alarmName', {when: Date.now() + POMODORO_TIME*1000-50});
+    chrome.alarms && chrome.alarms.create('alarmName', {when: Date.now() + POMODORO_TIME*1000-50});
     e.stopPropagation();
     if(pomodoroDetails && pomodoroDetails.startTime){
       setShowPomodoroInterruptModal(true);
@@ -161,7 +161,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
     setCurrentPomodoroTodo(null);
     startPomodoro({});
     setPomodoroDetails({});
-    chrome.alarms.clearAll(alarm =>{
+    chrome.alarms && chrome.alarms.clearAll(alarm =>{
       console.log("Cleared",alarm);
     })
   }
@@ -224,6 +224,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
           // bordered={true}
           itemLayout="horizontal"
           dataSource={stateTodoList}
+          locale={{emptyText:"No TODOs left"}}
           renderItem={item => (
             <List.Item className={`list-item ${item.isDone && 'todo-completed'}`}>
               <List.Item.Meta
