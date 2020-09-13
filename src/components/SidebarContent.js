@@ -41,8 +41,8 @@ let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTo
       addTodoItem(todoList)
     });
     chrome.storage && chrome.storage.local.get(['selected_todo_category'], function(result) {
-      selectedTodoCategory = result.selected_todo_category;
-      selectTodoCategory(parseInt(selectedTodoCategory));
+      selectedTodoCategory = parseInt(result.selected_todo_category)  || 0;
+      selectTodoCategory(selectedTodoCategory);
     });
   }
 
@@ -75,7 +75,7 @@ let SidebarContent = ({addCategory, categoryList, selectedTodoCategory, selectTo
     let updatedTodoList = todoList.filter(item => item.category !== categoryId);
     addTodoItem(updatedTodoList);
     if(selectedTodoCategory === categoryId){
-      selectTodoCategory(undefined);
+      selectTodoCategory(0);
     }
   }
 

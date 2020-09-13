@@ -1,21 +1,17 @@
-
 /* global chrome */
 
 import React, { useState, useEffect } from 'react';
-import { List, Input, Radio, Button,notification } from 'antd';
+import { List, Input, Radio, Button } from 'antd';
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faList, faWindowClose, faStar, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
-import { showNotification } from 'utils/notification';
-
 import { addTodoItem, startPomodoro } from 'actions/Todo';
 import WarningModal from 'components/modal/WarningModal';
-import { showChromeNotification } from 'utils/notification';
 
-const POMODORO_TIME = 1500;
+const POMODORO_TIME = 10;
 
 let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro}) => {
   const [selectedTodo, setSelectedTodo] = useState({}),
@@ -139,6 +135,10 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
   }
 
   const onPomodoroStart = (e,todoItem) => {
+    chrome.alarms.getAll(function(alarms) {
+      console.log(alarms);
+    });
+    chrome.alarms.create('alarmName', {when: Date.now() + POMODORO_TIME*1000-50});
     e.stopPropagation();
     if(pomodoroDetails && pomodoroDetails.startTime){
       setShowPomodoroInterruptModal(true);
@@ -148,11 +148,9 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
     setCurrentPomodoroTodo(todoItem);
     startPomodoro({startTime: Date.now(), todo: todoItem, remainingTime: POMODORO_TIME});
     setPomodoroDetails({startTime: Date.now(), todo: todoItem, remainingTime: POMODORO_TIME});
-    showChromeNotification("Pomodoro session started");
   }
 
   const onSecondPomodoroStart = () => {
-    debugger;
     setCurrentPomodoroTodo(secondPomodoroDetails.todo);
     startPomodoro(secondPomodoroDetails);
     setPomodoroDetails(secondPomodoroDetails);
@@ -161,7 +159,11 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
 
   const onPomodoroEnd = (e,todoItem) => {
     setCurrentPomodoroTodo(null);
-    showChromeNotification("Pomodoro session complete!");
+    startPomodoro({});
+    setPomodoroDetails({});
+    chrome.alarms.clearAll(alarm =>{
+      console.log("Cleared",alarm);
+    })
   }
 
   const onOutsideClick = () => {

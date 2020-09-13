@@ -10,7 +10,12 @@
    "default_popup": "index.html"
   },
   "permissions": [
-   "storage",
-   "notifications"
-   ]
+    "storage",
+    "notifications",
+    "alarms"
+   ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  }
 }

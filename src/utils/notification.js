@@ -12,13 +12,13 @@ export const showNotification = (message, type) => {
 
 export const showChromeNotification = (message) => {
   let options = {
-    type: 'basic',
-    title: "Focus: TODO-Pomodoro",
+    type: "basic",
+    title: "Infocus : Todo-pomodoro",
     message: message,
     iconUrl: "logo.png"
   }
 
-  chrome.notifications.create(Date.now().toString(), options, onChromeNotificationSuccess)
+  chrome.notifications.create(Date.now().toString(), options, onChromeNotificationSuccess);
 };
 
 const onChromeNotificationSuccess = () => {
