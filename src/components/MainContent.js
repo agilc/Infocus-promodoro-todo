@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { List, Input, Radio, Button } from 'antd';
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faList, faWindowClose, faStar, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle, faList, faWindowClose, faStar, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
@@ -119,6 +119,14 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
       return item;
     })
     addTodoItem(updatedTodoList);
+    // var w = 440;
+    // var h = 220;
+    // var left = 100;
+    // var top = 100; 
+
+    // chrome.windows.create({'url': 'popup.html', 'type': 'popup', 'width': w, 'height': h, 'left': left, 'top': top, 'state':'normal'} , function(window) {
+    // });
+
   }
 
   const onTodoItemComplete = e => {
@@ -243,6 +251,33 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
           <FontAwesomeIcon className="cursor-pointer" icon={faPlusCircle} onClick={onTodoItemAdd}/>
         </div>
       }
+      <div className="global-pomodoro">
+          <CountdownCircleTimer
+            isPlaying={pomodoroDetails.remainingTime}
+            duration={POMODORO_TIME}
+            initialRemainingTime={pomodoroDetails.remainingTime}
+            size={30}
+            strokeWidth={2}
+            strokeLinecap={2}
+            trailColor="white"
+            isLinearGradient={true}
+            ariaLabel="AGil"
+            colors={[
+              ['#8abff9', 1]
+            ]}
+            onComplete={onPomodoroEnd}
+          >
+            {({ remainingTime }) => parseInt(remainingTime/60)}
+          </CountdownCircleTimer>
+        <div className="pomodoro-name">{stateTodoList[0] && stateTodoList[0].value}</div>
+        <div className="pomodoro-action">
+          {
+            pomodoroDetails.remainingTime ?
+            <FontAwesomeIcon icon={faStop} style={{color:'#427bfb'}}/>
+            : <FontAwesomeIcon icon={faPlay} style={{color:'#427bfb'}}/>
+          }
+        </div>
+      </div>
       <WarningModal
         show={showPomodoroInterruptModal}
         onConfirm={onSecondPomodoroStart}

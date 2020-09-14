@@ -80,6 +80,33 @@
       }
     }
   }
+
+  .global-pomodoro {
+    position: absolute;
+    bottom: 3%;
+    left: calc(50% + 50px);
+    background: radial-gradient(circle, #3f5efb 0%, #46adfc 100%);
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+
+    .pomodoro-name{
+      color: white;
+      margin: 0 10px;
+      font-weight: 700;
+      width: 75px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pomodoro-action {
+      background-color: white;
+      padding: 0 6px;
+      border-radius: 3px;
+    }
+  }
 }
 
 .app-main-content {
