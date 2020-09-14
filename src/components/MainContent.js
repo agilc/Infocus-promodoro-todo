@@ -174,6 +174,12 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
     })
   }
 
+  const onPomodoroStop = () => {
+    setCurrentPomodoroTodo(null);
+    startPomodoro({});
+    setPomodoroDetails({});
+  }
+
   const onOutsideClick = () => {
     setSelectedTodo({});
     removeEmptyTodos()
@@ -273,8 +279,8 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
         <div className="pomodoro-action">
           {
             pomodoroDetails.remainingTime ?
-            <FontAwesomeIcon icon={faStop} style={{color:'#427bfb'}}/>
-            : <FontAwesomeIcon icon={faPlay} style={{color:'#427bfb'}}/>
+            <FontAwesomeIcon icon={faStop} style={{color:'#427bfb'}} onClick={onPomodoroStop}/>
+            : <FontAwesomeIcon icon={faPlay} style={{color:'#427bfb'}} onClick={e => onPomodoroStart(e,{})}/>
           }
         </div>
       </div>
