@@ -3,7 +3,7 @@
 
   "name": "Infocus : Todo-pomodoro",
   "description": "This is a todo/pomodoro app",
-  "version": "1.0.2",
+  "version": "1.0.4",
 
   "browser_action": {
    "default_icon": "logo.png",
