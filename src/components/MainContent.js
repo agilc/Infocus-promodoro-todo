@@ -266,6 +266,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
         pomodoroDetails.remainingTime ?
         <div className="global-pomodoro">
           <CountdownCircleTimer
+            key={pomodoroDetails && pomodoroDetails.todo && pomodoroDetails.todo.id}
             isPlaying={pomodoroDetails.remainingTime}
             duration={POMODORO_TIME}
             initialRemainingTime={pomodoroDetails.remainingTime}
@@ -282,7 +283,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
           >
             {({ remainingTime }) => parseInt(remainingTime/60)}
           </CountdownCircleTimer>
-          <div className="pomodoro-name">{stateTodoList[0] && stateTodoList[0].value}</div>
+          <div className="pomodoro-name">{currentPomodoroTodo && currentPomodoroTodo.value}</div>
           <div className="pomodoro-action">
             {
               pomodoroDetails.remainingTime ?
