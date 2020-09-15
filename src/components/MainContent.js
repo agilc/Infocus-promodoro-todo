@@ -257,7 +257,9 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
           <FontAwesomeIcon className="cursor-pointer" icon={faPlusCircle} onClick={onTodoItemAdd}/>
         </div>
       }
-      <div className="global-pomodoro">
+      {
+        pomodoroDetails.remainingTime ?
+        <div className="global-pomodoro">
           <CountdownCircleTimer
             isPlaying={pomodoroDetails.remainingTime}
             duration={POMODORO_TIME}
@@ -275,15 +277,16 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
           >
             {({ remainingTime }) => parseInt(remainingTime/60)}
           </CountdownCircleTimer>
-        <div className="pomodoro-name">{stateTodoList[0] && stateTodoList[0].value}</div>
-        <div className="pomodoro-action">
-          {
-            pomodoroDetails.remainingTime ?
-            <FontAwesomeIcon icon={faStop} style={{color:'#427bfb'}} onClick={onPomodoroStop}/>
-            : <FontAwesomeIcon icon={faPlay} style={{color:'#427bfb'}} onClick={e => onPomodoroStart(e,{})}/>
-          }
-        </div>
-      </div>
+          <div className="pomodoro-name">{stateTodoList[0] && stateTodoList[0].value}</div>
+          <div className="pomodoro-action">
+            {
+              pomodoroDetails.remainingTime ?
+              <FontAwesomeIcon icon={faStop} style={{color:'#427bfb'}} onClick={onPomodoroStop}/>
+              : <FontAwesomeIcon icon={faPlay} style={{color:'#427bfb'}} onClick={e => onPomodoroStart(e,{})}/>
+            }
+          </div>
+        </div> : null
+      }
       <WarningModal
         show={showPomodoroInterruptModal}
         onConfirm={onSecondPomodoroStart}
