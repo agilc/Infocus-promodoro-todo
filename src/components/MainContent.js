@@ -89,6 +89,8 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
 
   const onTodoItemSelect = (e, item) => {
     e.stopPropagation();
+    if(item.isDone)
+      return;
     setSelectedTodo(item);
   }
 
@@ -194,34 +196,37 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
 
   const getTodoListContent = (todoItem) => {
     return (
-      <div className="todo-item-wrapper">
-        { selectedTodo.id === todoItem.id ? <Input value={selectedTodo.value} onChange={e => onTodoListItemChange(e)} onKeyDown={onTodoItemKeyDown} onBlur={onTodoBlur}/> :  <div onClick={(e) => onTodoItemSelect(e, todoItem)}>{todoItem.value}</div> }
+      <div className={`todo-item-wrapper`}>
+        { selectedTodo.id === todoItem.id ? <Input value={selectedTodo.value} onChange={e => onTodoListItemChange(e)} onKeyDown={onTodoItemKeyDown} onBlur={onTodoBlur}/> :  <div>{todoItem.value}</div> }
         <div className="todo-action-btn">
-          <div className="timer-wrapper">
-            {
-              currentPomodoroTodo && currentPomodoroTodo.id === todoItem.id ? 
-              <CountdownCircleTimer
-                isPlaying={currentPomodoroTodo.id === todoItem.id}
-                duration={POMODORO_TIME}
-                initialRemainingTime={pomodoroDetails.remainingTime}
-                size={30}
-                strokeWidth={2}
-                strokeLinecap={2}
-                trailColor="white"
-                isLinearGradient={true}
-                ariaLabel="AGil"
-                colors={[
-                  ['#0146ad', 0.33],
-                  ['#0147ad', 0.33],
-                  ['#438bfc', 0.33]
-                ]}
-                onComplete={onPomodoroEnd}
-              >
-                {({ remainingTime }) => parseInt(remainingTime/60)}
-              </CountdownCircleTimer>
-              : <Button type="primary" shape="circle" onClick={(e) => onPomodoroStart(e,todoItem)} icon={<FontAwesomeIcon icon={faPlay} style={{color:'#427bfb'}}/>} style={{backgroundColor:'white'}}/>
-            }
-          </div>
+          {
+            !todoItem.isDone &&
+            <div className="timer-wrapper">
+              {
+                currentPomodoroTodo && currentPomodoroTodo.id === todoItem.id ? 
+                <CountdownCircleTimer
+                  isPlaying={currentPomodoroTodo.id === todoItem.id}
+                  duration={POMODORO_TIME}
+                  initialRemainingTime={pomodoroDetails.remainingTime}
+                  size={30}
+                  strokeWidth={2}
+                  strokeLinecap={2}
+                  trailColor="white"
+                  isLinearGradient={true}
+                  ariaLabel="AGil"
+                  colors={[
+                    ['#0146ad', 0.33],
+                    ['#0147ad', 0.33],
+                    ['#438bfc', 0.33]
+                  ]}
+                  onComplete={onPomodoroEnd}
+                >
+                  {({ remainingTime }) => parseInt(remainingTime/60)}
+                </CountdownCircleTimer>
+                : <Button type="primary" shape="circle" onClick={(e) => onPomodoroStart(e,todoItem)} icon={<FontAwesomeIcon icon={faPlay} style={{color:'#427bfb'}}/>} style={{backgroundColor:'white'}}/>
+              }
+            </div>
+          }
         
           <div className="action-item"><FontAwesomeIcon icon={todoItem.isFavorite ? faStar : faStarRegular } onClick={(e) => addToFavourites(e, todoItem)}/></div> 
           <div className="action-item"><FontAwesomeIcon icon={faWindowClose} onClick={(e) => onTodoItemDelete(e, todoItem)}/></div> 
@@ -245,7 +250,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
                 avatar={selectedTodo.id !== item.id && <Checkbox value={item.id} checked={item.isDone} onClick={onTodoItemComplete}></Checkbox>}
                 title={getTodoListContent(item)}
                 // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                // onClick={(e) => onTodoItemSelect(e, item)}
+                onClick={(e) => onTodoItemSelect(e, item)}
               />
             </List.Item>
           )}

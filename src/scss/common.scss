@@ -68,3 +68,15 @@
     margin: 5px 5px;
   }
 }
+
+.ant-list-item-meta{
+  align-items: center;
+  
+  .ant-list-item-meta-title{
+    margin-bottom: 0px !important;
+  }
+}
+
+.disabled {
+  pointer-events: none;
+}
