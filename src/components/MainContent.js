@@ -1,7 +1,7 @@
 /* global chrome */
 
 import React, { useState, useEffect } from 'react';
-import { List, Input, Radio, Button } from 'antd';
+import { List, Input, Checkbox, Button } from 'antd';
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faList, faWindowClose, faStar, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
@@ -195,7 +195,7 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
   const getTodoListContent = (todoItem) => {
     return (
       <div className="todo-item-wrapper">
-        { selectedTodo.id === todoItem.id ? <Input value={selectedTodo.value} onChange={e => onTodoListItemChange(e)} onKeyDown={onTodoItemKeyDown} onBlur={onTodoBlur}/> :  <div>{todoItem.value}</div> }
+        { selectedTodo.id === todoItem.id ? <Input value={selectedTodo.value} onChange={e => onTodoListItemChange(e)} onKeyDown={onTodoItemKeyDown} onBlur={onTodoBlur}/> :  <div onClick={(e) => onTodoItemSelect(e, todoItem)}>{todoItem.value}</div> }
         <div className="todo-action-btn">
           <div className="timer-wrapper">
             {
@@ -242,10 +242,10 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
           renderItem={item => (
             <List.Item className={`list-item ${item.isDone && 'todo-completed'}`}>
               <List.Item.Meta
-                avatar={selectedTodo.id !== item.id && <Radio value={item.id} checked={item.isDone} onClick={onTodoItemComplete}></Radio>}
+                avatar={selectedTodo.id !== item.id && <Checkbox value={item.id} checked={item.isDone} onClick={onTodoItemComplete}></Checkbox>}
                 title={getTodoListContent(item)}
                 // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                onClick={(e) => onTodoItemSelect(e, item)}
+                // onClick={(e) => onTodoItemSelect(e, item)}
               />
             </List.Item>
           )}
