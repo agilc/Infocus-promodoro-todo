@@ -11,7 +11,7 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { addTodoItem, startPomodoro } from 'actions/Todo';
 import WarningModal from 'components/modal/WarningModal';
 
-const POMODORO_TIME = 1500;
+const POMODORO_TIME = 120;
 
 let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro}) => {
   const [selectedTodo, setSelectedTodo] = useState({}),
@@ -148,7 +148,9 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
     chrome.alarms && chrome.alarms.getAll(function(alarms) {
       console.log(alarms);
     });
-    chrome.alarms && chrome.alarms.create('alarmName', {when: Date.now() + POMODORO_TIME*1000-50});
+    chrome.alarms && chrome.alarms.create('pomodoro_complete', {when: Date.now() + POMODORO_TIME*1000-50});
+    chrome.alarms && chrome.alarms.create('pomodoro_one_min', {when: Date.now() + 1000, periodInMinutes: 1});
+    chrome.browserAction.setBadgeText({text: String(parseInt(POMODORO_TIME/60))});
     e.stopPropagation();
     if(pomodoroDetails && pomodoroDetails.startTime){
       setShowPomodoroInterruptModal(true);
@@ -168,6 +170,8 @@ let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro})
   }
 
   const onPomodoroEnd = (e,todoItem) => {
+    chrome.alarms.clearAll();
+    chrome.browserAction.setBadgeText({text: ''});
     setCurrentPomodoroTodo(null);
     startPomodoro({});
     setPomodoroDetails({});
