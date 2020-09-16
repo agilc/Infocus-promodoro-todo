@@ -11,7 +11,7 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { addTodoItem, startPomodoro } from 'actions/Todo';
 import WarningModal from 'components/modal/WarningModal';
 
-const POMODORO_TIME = 120;
+const POMODORO_TIME = 1500;
 
 let MainContent = ({addTodoItem, todoList, selectedTodoCategory, startPomodoro}) => {
   const [selectedTodo, setSelectedTodo] = useState({}),

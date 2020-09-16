@@ -12,7 +12,7 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
   let totalElapsedTime=0;
 
   chrome.alarms.get('pomodoro_complete', (alarm) => {
-    totalElapsedTime = parseInt((alarm.scheduledTime-Date.now())/(1000*60));
+    totalElapsedTime = parseInt((alarm.scheduledTime-Date.now())/(1000*60))+1;
     console.log(totalElapsedTime)
     if(totalElapsedTime<=0)
       showChromeNotification("Pomodoro session completed!");
